@@ -57,6 +57,25 @@
         background-color: grey;
       }
 
+      textarea {
+        resize: none;
+        border-top: none;
+        border-color: grey;
+      }
+
+      .panel {
+        float:left;
+        width: 50%;
+      }
+
+      iframe {
+        border: none;
+      }
+
+      .hidden {
+        display:none;
+      }
+
     </style>
   </head>
   <body>
@@ -73,12 +92,37 @@
       </div>
     </div>
 
+    <div id="bodyContainer">
+      <textarea id="htmlPanel" class="panel">Hello World!</textarea>
+      <textarea id="cssPanel" class="panel hidden">p { color: green; }</textarea>
+      <textarea id="javascriptPanel" class="panel hidden">alert("Hi there!");</textarea>
+
+      <iframe id="outputPanel" class="panel"></iframe>
+    </div>
+
     <script type="text/javascript">
       $(".toggleButton").hover(function() {
-        $(this).css("background-color", "grey");
+        $(this).addClass("highlightedButton");
       }, function() {
-        $(this).css("background-color", "#EEEEEE");
+        $(this).removeClass("highlightedButton");
       });
+
+      $(".toggleButton").click(function() {
+        $(this).toggleClass("active");
+        $(this).removeClass("highlightedButton");
+        var panelId = $(this).attr("id") + "Panel";
+        alert(panelId);
+      });
+
+      $(".panel").height($(window).height() - $("#header").height() - 15);
+
+      $(".panel").width(($(window).width() / 2) - 10);
+
+      $("iframe").contents().find("html").html($("#htmlPanel").val());
+
+      $("textarea").on("change keyup paste", function(){
+        $("iframe").contents().find("html").html($("#htmlPanel").val());
+      })
     </script>
   </body>
 </html>
